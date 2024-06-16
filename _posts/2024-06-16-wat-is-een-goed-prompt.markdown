@@ -56,6 +56,8 @@ Wanneer je bovenstaande prompt uitvoerd zal je zien dat Copilot de informatie op
 " target="_blank"><img src="http://img.youtube.com/vi/NRDkw69zQE8/0.jpg" 
 alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
 
+{% include youtube.html id="NRDkw69zQE8" %}
+
 Copilot zal nu met een compleet ander antwoord komen omdat we hebben verteld wat de context is. We willen namelijk dat het artikel mensen voorbereid door te vertellen wat er volgende gaat gaat gebeuren op het EK.
 
 Het is nogsteeds een bullet list met waarin beschreven wordt welke punten we op kunnen nemen in ons artikel alleen nu al veel specifieker dan ons eerste prompt.
