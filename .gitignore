@@ -1,0 +1,24 @@
+.DS_Store
+
+# Compiled site
+_site
+.jekyll-cache/
+
+# Sass garbage
+.sass-cache
+
+# Bundler
+.bundle/
+vendor/
+
+# Exclude the Gemfile.lock
+Gemfile.lock
+
+# Exclude .tasks folder
+.tasks
+
+# Exclude README.md
+README.md
+
+#Exclude stackbit.yaml
+stackbit.yaml
