@@ -5,7 +5,7 @@ date: 2024-06-16 20:21:02 +0200
 categories: informatie
 ---
 
-In het eerste blog hebben we het gehad over wat prompting is en wat AI-modellen nu eigenlijk zijn. In dit blog gaan we kijken uit welke componenten een goede prompt nu bestaat en hoe je een goed prompt kan schrijven.
+In het eerste blog hebben we het gehad over wat prompting is en wat AI-modellen nu eigenlijk zijn. In dit blog gaan we kijken uit welke componenten een goed prompt nu bestaat en hoe je een goed prompt kan schrijven.
 
 ## De componenten
 
@@ -44,13 +44,23 @@ Aangezien het EK net is begonnen is het misschien wel leuk om hier een artikel o
 
 `Help me bij het schrijven van een artikel over het EK in Duitsland`
 
-demo: {% include youtube.html id="5mYIAqqv65g" %}
+demo:
+
+```markdown
+[![Final video of fixing issues in your code in VS Code]
+(https://img.youtube.com/vi/5mYIAqqv65g/maxresdefault.jpg)]
+(https://www.youtube.com/watch?v=5mYIAqqv65g)
+```
 
 Wanneer je bovenstaande prompt uitvoerd zal je zien dat Copilot de informatie ophaalt van meerdere websites op het web. Alleen is het artikel heel erg toegespitst op een aantal punten. Stel dat we nu alleen maar geïnteresseerd zijn in het Nederland elftal dan zullen we het prompt specifieker moeten maken. Dit kunnen we doen door de **context** toe te voegen:
 
 `help me bij het schrijven van een artikel over het EK in Duitsland om andere mensen voor te bereiden op wat er de komende week gaat gebeuren`
 
-demo: {% include youtube.html id="NRDkw69zQE8" %}
+```markdown
+[![demo]
+(https://img.youtube.com/vi/NRDkw69zQE8/maxresdefault.jpg)]
+(https://www.youtube.com/watch?v=NRDkw69zQE8)
+```
 
 Copilot zal nu met een compleet ander antwoord komen omdat we hebben verteld wat de context is. We willen namelijk dat het artikel mensen voorbereid door te vertellen wat er volgende gaat gaat gebeuren op het EK.
 
@@ -60,7 +70,11 @@ Laten we nu nog een stap verder gaan door de **verwachting** toe te voegen:
 
 `help me bij het schrijven van een artikel over het EK in Duitsland om andere mensen voor te bereiden op wat er de komende week gaat gebeuren. Zorg ervoor dat er een tabel wordt getoond met de andere landen die in dezelfde poule als Nederland spelen. Deze tabel moet de landnaam bevatten| de naam van de coach | de topspeler. Maak een tweede tabel met hierin het speelschema van het Nederlands elftal de kolommen van deze tabel moeten zijn: datum en tijd | tegenstander | stadion | stad. Zorg er daarnaast voor dat het laatste nieuw van het Nederlands elftal wordt toegevoegd op basis van de laatst gespeelde webstrijd tijdens het EK in Duitsland in 2024`
 
-demo: {% include youtube.html id="LkVeUc81AcE" %}
+```markdown
+[![demo]
+(https://img.youtube.com/vi/LkVeUc81AcE/maxresdefault.jpg)]
+(https://www.youtube.com/watch?v=LkVeUc81AcE)
+```
 
 Je ziet dat prompt een stuk langer is geworden maar we vertellen wel duidelijk wat we van Copilot verwachten. Probeer het prompt zelf maar eens en laat je verrassen. Overigens moet ik wel opmerken dat ik dit meerdere keren heb geprobeerd met verschillende resultaten omdat er elke keer andere bronnen wordt gebruikt.
 
@@ -68,7 +82,11 @@ En dat is dan ook de laatste stap de **bron** toevoegen. Stel dat we alleen maar
 
 `help me bij het schrijven van een artikel over het EK in Duitsland om andere mensen voor te bereiden op wat er de komende week gaat gebeuren. Zorg ervoor dat er een tabel wordt getoond met de andere landen die in dezelfde poule als Nederland spelen. Deze tabel moet de landnaam bevatten| de naam van de coach | de topspeler. Maak een tweede tabel met hierin het speelschema van het Nederlands elftal de kolommen van deze tabel moeten zijn: datum en tijd | tegenstander | stadion | stad. Zorg er daarnaast voor dat het laatste nieuw van het Nederlands elftal wordt toegevoegd op basis van de laatst gespeelde webstrijd tijdens het EK in Duitsland in 2024. Zorg ervoor dat je alleen maar de volgende informatiebronnen gebruikt: nos.nl, de officiele EK 2024 website en Nederlandse kranten`
 
-demo: {% include youtube.html id="KqEh5UDWIYs" %}
+```markdown
+[![demo]
+(https://img.youtube.com/vi/KqEh5UDWIYs/maxresdefault.jpg)]
+(https://www.youtube.com/watch?v=KqEh5UDWIYs)
+```
 
 Wanneer je dit prompt gebruikt zal je zien dat Copilot hier wat moeite mee heeft. Het gebruikt nos.nl en diverse andere sites om antwoord te geven op de vraag. Neem je alleen nos.nl op als informatiebron dan zal je zien dat Copilot alleen deze bronnen gebruikt.
 
