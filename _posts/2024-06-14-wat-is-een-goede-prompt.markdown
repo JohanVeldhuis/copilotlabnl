@@ -2,7 +2,7 @@
 layout: post
 title: "Wat is een goede prompt?"
 date: 2024-06-16 20:21:02 +0200
-categories: Copilot CopilotM365
+categories: informatie
 ---
 
 In het eerste blog hebben we het gehad over wat prompting is en wat AI-modellen nu eigenlijk zijn. In dit blog gaan we kijken uit welke componenten een goede prompt nu bestaat en hoe je een goed prompt kan schrijven.
