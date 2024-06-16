@@ -44,17 +44,11 @@ Aangezien het EK net is begonnen is het misschien wel leuk om hier een artikel o
 
 `Help me bij het schrijven van een artikel over het EK in Duitsland`
 
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=5mYIAqqv65g
-" target="_blank"><img src="http://img.youtube.com/vi/5mYIAqqv65g/0.jpg" 
-alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
+{% include youtube.html id="5mYIAqqv65g" %}
 
 Wanneer je bovenstaande prompt uitvoerd zal je zien dat Copilot de informatie ophaalt van meerdere websites op het web. Alleen is het artikel heel erg toegespitst op een aantal punten. Stel dat we nu alleen maar geïnteresseerd zijn in het Nederland elftal dan zullen we het prompt specifieker moeten maken. Dit kunnen we doen door de **context** toe te voegen:
 
 `help me bij het schrijven van een artikel over het EK in Duitsland om andere mensen voor te bereiden op wat er de komende week gaat gebeuren`
-
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=NRDkw69zQE8
-" target="_blank"><img src="http://img.youtube.com/vi/NRDkw69zQE8/0.jpg" 
-alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
 
 {% include youtube.html id="NRDkw69zQE8" %}
 
@@ -66,9 +60,7 @@ Laten we nu nog een stap verder gaan door de **verwachting** toe te voegen:
 
 `help me bij het schrijven van een artikel over het EK in Duitsland om andere mensen voor te bereiden op wat er de komende week gaat gebeuren. Zorg ervoor dat er een tabel wordt getoond met de andere landen die in dezelfde poule als Nederland spelen. Deze tabel moet de landnaam bevatten| de naam van de coach | de topspeler. Maak een tweede tabel met hierin het speelschema van het Nederlands elftal de kolommen van deze tabel moeten zijn: datum en tijd | tegenstander | stadion | stad. Zorg er daarnaast voor dat het laatste nieuw van het Nederlands elftal wordt toegevoegd op basis van de laatst gespeelde webstrijd tijdens het EK in Duitsland in 2024`
 
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=LkVeUc81AcE
-" target="_blank"><img src="http://img.youtube.com/vi/LkVeUc81AcE/0.jpg" 
-alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
+{% include youtube.html id="LkVeUc81AcE" %}
 
 Je ziet dat prompt een stuk langer is geworden maar we vertellen wel duidelijk wat we van Copilot verwachten. Probeer het prompt zelf maar eens en laat je verrassen. Overigens moet ik wel opmerken dat ik dit meerdere keren heb geprobeerd met verschillende resultaten omdat er elke keer andere bronnen wordt gebruikt.
 
@@ -76,9 +68,7 @@ En dat is dan ook de laatste stap de **bron** toevoegen. Stel dat we alleen maar
 
 `help me bij het schrijven van een artikel over het EK in Duitsland om andere mensen voor te bereiden op wat er de komende week gaat gebeuren. Zorg ervoor dat er een tabel wordt getoond met de andere landen die in dezelfde poule als Nederland spelen. Deze tabel moet de landnaam bevatten| de naam van de coach | de topspeler. Maak een tweede tabel met hierin het speelschema van het Nederlands elftal de kolommen van deze tabel moeten zijn: datum en tijd | tegenstander | stadion | stad. Zorg er daarnaast voor dat het laatste nieuw van het Nederlands elftal wordt toegevoegd op basis van de laatst gespeelde webstrijd tijdens het EK in Duitsland in 2024. Zorg ervoor dat je alleen maar de volgende informatiebronnen gebruikt: nos.nl, de officiele EK 2024 website en Nederlandse kranten`
 
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=KqEh5UDWIYs
-" target="_blank"><img src="http://img.youtube.com/vi/KqEh5UDWIYs/0.jpg" 
-alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
+{% include youtube.html id="KqEh5UDWIYs" %}
 
 Wanneer je dit prompt gebruikt zal je zien dat Copilot hier wat moeite mee heeft. Het gebruikt nos.nl en diverse andere sites om antwoord te geven op de vraag. Neem je alleen nos.nl op als informatiebron dan zal je zien dat Copilot alleen deze bronnen gebruikt.
 
