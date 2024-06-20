@@ -38,10 +38,10 @@ pagination:
 					<p>{{ post.content | strip_html | truncatewords: 50 }}</p>
 				</section>
 				<section class="post-meta">
-					<div class="post-date">{{ post.date | date: "%B %-d, %Y" }}</div>
+					<div class="post-date">{{ post.date | date: "%-d-%m-%Y" }}</div>
 					<div class="post-categories">
-						{% if post.categories.size > 0 %}in {% for cat in post.categories %}
-						{% if site.jekyll-archives %}
+						{% if post.categories.size > 0 %}categorie {% for cat in
+						post.categories %} {% if site.jekyll-archives %}
 						<a href="{{ site.baseurl }}/category/{{ cat }}"
 							>{{ cat | capitalize }}</a
 						>{% if forloop.last == false %}, {% endif %} {% else %}
@@ -86,7 +86,7 @@ pagination:
 				</span>
 				{% endif %}
 				<span class="page-number"
-					>Page {{ paginator.page }} of {{ paginator.total_pages }}</span
+					>pagina {{ paginator.page }} van {{ paginator.total_pages }}</span
 				>
 				{% if paginator.next_page %}
 				<a

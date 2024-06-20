@@ -57,8 +57,26 @@ descriptions:
   - cat: informatie
     desc: "Algemene informatie over Copilots"
 
-  - cat: CopilotM365
-    desc: "Post over Copilot for M365 prompts."
+  - cat: Word
+    desc: "Post over Copilot for M365 prompts die gebruikt kunnen worden in Word."
+
+  - cat: Excel
+    desc: "Post over Copilot for M365 prompts die gebruikt kunnen worden in Excel."
+
+  - cat: PowerPoint
+    desc: "Post over Copilot for M365 prompts die gebruikt kunnen worden in PowerPoint."
+
+  - cat: Loop
+    desc: "Post over Copilot for M365 prompts die gebruikt kunnen worden in Loop."
+
+  - cat: Whiteboard
+    desc: "Post over Copilot for M365 prompts die gebruikt kunnen worden in Whiteboard."
+
+  - cat: Teams
+    desc: "Post over Copilot for M365 prompts die gebruikt kunnen worden in Teams."
+
+  - cat: M365Chat
+    desc: "Post over Copilot for M365 prompts die gebruikt kunnen worden in M365 Chat."
   # Social icons and sharing options
   #
   # Social settings are used in two places:

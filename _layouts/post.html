@@ -7,7 +7,6 @@ layout: default
   <div class="scrim {% if page.cover %}has-cover{% endif %}">
     <header class="post-header">
       <h1 class="title">{{ page.title }}</h1>
-      <p class="info">by <strong>{{ page.author }}</strong></p>
     </header>
   </div>
 </div>
@@ -17,9 +16,9 @@ layout: default
 {% unless page.cover %} {% include page_divider.html %} {% endunless %}
 
 <section class="post-meta">
-  <div class="post-date">{{ page.date | date: "%B %-d, %Y" }}</div>
+  <div class="post-date">{{ page.date | date: "%-d-%m-%Y" }}</div>
   <div class="post-categories">
-  {% if page.categories.size > 0 %}in {% for cat in page.categories %}
+  {% if page.categories.size > 0 %}categorie {% for cat in page.categories %}
     {% if site.jekyll-archives %}
     <a href="{{ site.baseurl }}/category/{{ cat }}">{{ cat | capitalize }}</a>{% if forloop.last == false %}, {% endif %}
     {% else %}
@@ -42,7 +41,7 @@ layout: default
 {% endif %}
 
 <section class="rss">
-  <p class="rss-subscribe text"><strong>Subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></strong></p>
+  <p class="rss-subscribe text"><strong>Abonneren op deze feed <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></strong></p>
 </section>
 
 <section class="share">
