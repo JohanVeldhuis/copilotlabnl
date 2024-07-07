@@ -13,7 +13,7 @@ Wat we willen automatiseren is het verversen van de data in de Excel sheet. We w
 
 De prompt die we hiervoor kunnen gebruiken ziet er als volgt uit
 
-`Hel me adding automating to this sheet which allows me to press a button to refresh the data. The automation should prompt the user for confirmation before updating the report.`
+`Help me adding automating to this sheet which allows me to press a button to refresh the data. The automation should prompt the user for confirmation before updating the report.`
 
 Wil je liever eerst zien hoe het werkt voordat je het zelf gaat uitproberen kijk dan eens naar onderstaande video
 
