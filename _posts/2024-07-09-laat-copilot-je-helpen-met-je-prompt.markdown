@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "Laat Copilot je helpen bij het maken van je prompt"
-date: 2024-07-09 09:29:02 +0200
-categories: Excel
+date: 2024-07-09 19:18:02 +0200
+categories: Copilot
 ---
 
 Zoals je misschien al hebt ervaren is het maken van een prompt niet altijd eenvoudig en moet je soms veel experimenteren om een goed prompt te maken.
