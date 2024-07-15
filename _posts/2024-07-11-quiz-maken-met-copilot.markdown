@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Quiz ma"
+title: Quiz maken met Copilot"
 date: 2024-07-11 19:18:02 +0200
 categories: Copilot
 ---
@@ -19,6 +19,6 @@ Help me create a quiz which can be used as an end test for attendees of a traini
 
 Wil je liever eerst zien hoe het werkt voordat je het zelf gaat uitproberen kijk dan eens naar onderstaande video
 
-{% include youtube.html id="SsGUigKzQDg"%}
+{% include youtube.html id="SsGUigKzQDg" %}
 
 In deze blog hebben we gekeken hoe je Copilot kunt gebruiken om een quiz te maken met Microsoft Forms. Probeer naast het maken van een quiz ook eens "normale" optie in forms om bijvoorbeeld een survey te maken. Ook hier kun je weer Copilot gebruiken en tijd terugwinnen.
