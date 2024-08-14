@@ -23,6 +23,6 @@ Er zijn diverse data analyses mogelijk maar zoals al eerder vermeld is het ook m
 
 Wil je liever eerst zien hoe het werkt voordat je het zelf gaat uitproberen kijk dan eens naar onderstaande video
 
-{% include youtube.html id="SsGUigKzQDg" %}
+{% include youtube.html id="TmdXWvRIGu0" %}
 
 In deze blog hebben we gekeken hoe je Copilot kunt gebruiken om data te analyzeren. Wil je dit nu proberen maar heb je nog geen dataset, kijk dan eens op https://www.kaggle.com/ hier kun je diverse datasets terugvinden die je hiervoor kunt gebruiken.
