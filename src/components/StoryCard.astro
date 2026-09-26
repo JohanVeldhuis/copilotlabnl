@@ -1,0 +1,17 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { dateLabel, topicLabel } from '../lib/content';
+interface Props { story: CollectionEntry<'stories'> }
+const { story } = Astro.props;
+const data = story.data;
+---
+<article class="card" data-editorial-status={data.status}>
+  <div class="card-visual"><img src={`/art/${data.art}.svg`} alt="" width="720" height="420" loading="lazy" /></div>
+  <div class="card-body">
+    <div class="meta"><span class="badge">Verhaal</span><span>{topicLabel(data.topic)}</span>{data.status === 'archived' && <span class="badge badge-archive">Archief · 2024</span>}</div>
+    <h3><a href={data.url}>{data.title}</a></h3>
+    <p>{data.description}</p>
+    <div class="meta"><time datetime={data.published}>{dateLabel(data.published)}</time>{data.status === 'refreshed' && <span>Nieuwe redactionele editie</span>}</div>
+    <a class="card-link" href={data.url} aria-label={`Lees: ${data.title}`}>Lees het verhaal ↗</a>
+  </div>
+</article>

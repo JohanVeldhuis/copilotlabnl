@@ -1,0 +1,6 @@
+---
+import { getStories } from '../../lib/content';
+import StoryListing from '../../components/StoryListing.astro';
+const stories = await getStories();
+---
+<StoryListing stories={stories.slice(0, 6)} pages={Math.ceil(stories.length / 6)} />

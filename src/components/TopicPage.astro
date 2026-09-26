@@ -1,0 +1,19 @@
+---
+import Base from '../layouts/Base.astro';
+import StoryCard from './StoryCard.astro';
+import VideoCard from './VideoCard.astro';
+import { getStories, getVideos, topicLabel } from '../lib/content';
+interface Props { topic: string; legacy?: boolean }
+const { topic, legacy = false } = Astro.props;
+const stories = (await getStories()).filter((story) => story.data.topic === topic);
+const videos = (await getVideos()).filter((video) => video.data.topic === topic);
+---
+<Base title={topicLabel(topic)} canonical={`/onderwerpen/${topic}/`} noindex={legacy}>
+  <div class="wrap">
+    <header class="page-head"><div class="eyebrow">Onderwerp</div><h1>{topicLabel(topic)}</h1><p class="lede">Verhalen en demonstraties om mee verder te denken. Historische voorbeelden herken je aan het archieflabel.</p></header>
+    <div class="section-title"><h2>Verhalen</h2><a href="/verhalen/">Alle verhalen ↗</a></div>
+    <div class="cards">{stories.map((story) => <StoryCard story={story} />)}</div>
+    {videos.length > 0 && <section class="section"><div class="section-title"><h2>Video's</h2><a href="/videos/">Alle video's ↗</a></div><div class="cards">{videos.map((video) => <VideoCard video={video} />)}</div></section>}
+    <div style="height:45px"></div>
+  </div>
+</Base>

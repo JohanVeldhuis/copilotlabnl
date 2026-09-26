@@ -1,0 +1,15 @@
+---
+import Base from '../../layouts/Base.astro';
+import VideoCard from '../../components/VideoCard.astro';
+import { getVideos } from '../../lib/content';
+const videos = await getVideos();
+---
+<Base title="Video's" description="Historische Copilot-demonstraties van Johan Veldhuis, met bijbehorende verhalen en context.">
+  <div class="wrap">
+    <header class="page-head"><div class="eyebrow">Kijken, begrijpen, zelf proberen</div><h1>Een kijkje in het lab.</h1><p class="lede">Demonstraties met de uitleg erbij. Historische opnamen herken je aan het archieflabel: bekijk die voorbeelden met hun oorspronkelijke context in gedachten.</p></header>
+    <aside class="notice"><strong>Een eerlijk beeld van het archief</strong><p>De video's uit 2024 zijn niet opnieuw productgetest. Hun titels op deze site zijn beschrijvende labels bij de oorspronkelijke artikelen. Actuele functies en schermen kunnen afwijken.</p></aside>
+    <nav class="filter-links" aria-label="Video-onderwerpen"><a class="topic" href="/onderwerpen/excel/">Excel</a><a class="topic" href="/onderwerpen/copilot/">Copilot</a><a class="topic" href="/zoeken/">Zoek een onderwerp ↗</a></nav>
+    <div class="cards">{videos.map((video) => <VideoCard video={video} />)}</div>
+    <div style="height:45px"></div>
+  </div>
+</Base>

@@ -1,0 +1,10 @@
+---
+import { getStories } from '../../../lib/content';
+import StoryListing from '../../../components/StoryListing.astro';
+export async function getStaticPaths() {
+  const stories = (await getStories()).filter((story) => story.data.status === 'archived');
+  return [2, 3].map((page) => ({ params: { number: String(page) }, props: { stories: stories.slice((page - 1) * 5, page * 5), page } }));
+}
+const { stories, page } = Astro.props;
+---
+<StoryListing stories={stories} page={page} pages={3} legacy />

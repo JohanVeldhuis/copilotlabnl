@@ -1,0 +1,48 @@
+---
+import { marked } from 'marked';
+import VideoEmbed from './VideoEmbed.astro';
+import { escapeXml } from '../lib/content';
+interface Props { body: string; title: string }
+const { body, title } = Astro.props;
+const headings = new Map<string, number>();
+const blocks = body.split(/(<!-- video:[A-Za-z0-9_-]{11} -->)/g).filter(Boolean).map((block) => {
+  const video = block.match(/^<!-- video:([A-Za-z0-9_-]{11}) -->$/);
+  if (video) return { video: video[1], html: '' };
+  const html = marked.parse(block, { async: false }).replace(/<h([1-6])>(.*?)<\/h\1>/g, (_match, depth: string, text: string) => {
+    const slug = text.replace(/<[^>]+>/g, '').toLowerCase().replace(/[^\p{L}\p{N}\s-]/gu, '').trim().replace(/\s+/g, '-');
+    const count = headings.get(slug) ?? 0;
+    headings.set(slug, count + 1);
+    return `<h${depth} id="${escapeXml(`${slug}${count ? `-${count}` : ''}`)}">${text}</h${depth}>`;
+  });
+  return { video: '', html };
+});
+---
+<div class="prose">
+  {blocks.map((block) => block.video ? <VideoEmbed youtubeId={block.video} title={`Historische demonstratie bij: ${title}`} /> : <Fragment set:html={block.html} />)}
+</div>
+<script>
+  document.querySelectorAll<HTMLPreElement>('.prose pre').forEach((pre) => {
+    const code = pre.querySelector('code');
+    if (!code) return;
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'copy-button';
+    button.textContent = 'Kopieer tekst';
+    const status = document.createElement('span');
+    status.className = 'sr-only';
+    status.setAttribute('role', 'status');
+    pre.prepend(button);
+    pre.after(status);
+    button.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(code.textContent || '');
+        button.textContent = 'Gekopieerd';
+        status.textContent = 'Tekst gekopieerd naar het klembord.';
+      } catch (error) {
+        console.error('Kopiëren naar het klembord mislukt.', error);
+        button.textContent = 'Kopiëren mislukt — selecteer de tekst';
+        status.textContent = 'Kopiëren mislukt. Selecteer en kopieer de tekst handmatig.';
+      }
+    });
+  });
+</script>

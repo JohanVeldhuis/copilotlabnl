@@ -1,0 +1,71 @@
+---
+import '../styles/global.css';
+import { channel, site } from '../lib/content';
+interface Props {
+  title: string;
+  description?: string;
+  canonical?: string;
+  noindex?: boolean;
+  article?: boolean;
+  published?: string;
+}
+const { title, description = "Persoonlijke verhalen, video's en experimenten met Copilot. Door Johan Veldhuis.", canonical = Astro.url.pathname, noindex = false, article = false, published } = Astro.props;
+const canonicalUrl = new URL(canonical, site).href;
+const path = Astro.url.pathname;
+const structured = article && published ? {
+  '@context': 'https://schema.org', '@type': 'Article',
+  headline: title, description, datePublished: published, inLanguage: 'nl',
+  author: { '@type': 'Person', name: 'Johan Veldhuis', url: `${site}/over/` },
+  mainEntityOfPage: canonicalUrl, image: `${site}/art/social.png`,
+} : undefined;
+---
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title === 'Copilot Lab' ? 'Copilot Lab — meer ruimte voor jouw ideeën' : `${title} · Copilot Lab`}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#fbfcff" />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate" type="application/rss+xml" title="Copilot Lab" href="/feed.xml" />
+    {noindex && <meta name="robots" content="noindex,follow" />}
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:type" content={article ? 'article' : 'website'} />
+    <meta property="og:locale" content="nl_NL" />
+    <meta property="og:site_name" content="Copilot Lab" />
+    <meta property="og:image" content={`${site}/art/social.png`} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Originele Copilot Lab-illustratie van een blauwe boog en lila bol" />
+    <meta name="twitter:card" content="summary_large_image" />
+    {structured && <script type="application/ld+json" set:html={JSON.stringify(structured).replace(/</g, '\\u003c')} />}
+  </head>
+  <body>
+    <a class="skip" href="#inhoud">Naar de inhoud</a>
+    <header class="wrap" data-pagefind-ignore>
+      <nav class="navigation" aria-label="Hoofdnavigatie">
+        <a class="brand" href="/" aria-label="Copilot Lab, naar de homepage"><span class="brand-icon" aria-hidden="true">/·</span>copilot lab</a>
+        <div class="nav-links">
+          <a href="/verhalen/" aria-current={path.startsWith('/verhalen') ? 'page' : undefined}>Verhalen</a>
+          <a href="/videos/" aria-current={path.startsWith('/videos') ? 'page' : undefined}>Video's</a>
+          <a href="/over/" aria-current={path === '/over/' ? 'page' : undefined}>Over Johan</a>
+          <a href="/zoeken/" aria-current={path === '/zoeken/' ? 'page' : undefined}>Zoeken</a>
+          <a class="youtube" href={channel}>YouTube ↗</a>
+        </div>
+      </nav>
+    </header>
+    <main id="inhoud"><slot /></main>
+    <footer class="wrap" data-pagefind-ignore>
+      <div class="footer">
+        <div><strong>copilot lab</strong> / Nieuwsgierigheid delen.<br />Een persoonlijke publicatie van Johan Veldhuis.<br />Geen officiële Microsoft-website.</div>
+        <nav class="footer-links" aria-label="Voetnavigatie">
+          <a href="/posts/">Archief</a><a href="/privacy/">Privacy</a><a href="/feed.xml">RSS</a><a href={channel}>YouTube ↗</a>
+        </nav>
+      </div>
+    </footer>
+  </body>
+</html>

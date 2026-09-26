@@ -1,0 +1,41 @@
+---
+interface Props { youtubeId: string; title: string; art?: string }
+const { youtubeId, title, art = 'data' } = Astro.props;
+if (!/^[A-Za-z0-9_-]{11}$/.test(youtubeId)) throw new Error(`Invalid video ID: ${youtubeId}`);
+---
+<figure class="video-block" data-video={youtubeId} data-title={title}>
+  <div class="video-stage">
+    <img src={`/art/${art}.svg`} alt="" width="720" height="420" loading="lazy" />
+    <button class="play-button" type="button" aria-label={`Speel video: ${title}`} hidden><span><span aria-hidden="true">▶</span> Video laden via YouTube</span></button>
+  </div>
+  <figcaption class="video-disclosure">
+    Na het activeren maakt je browser verbinding met YouTube.
+    <a href={`https://www.youtube.com/watch?v=${youtubeId}`}>Open deze video op YouTube ↗</a>
+    <span class="video-feedback" role="status"></span>
+  </figcaption>
+</figure>
+<script>
+  document.querySelectorAll<HTMLElement>('[data-video]').forEach((figure) => {
+    const button = figure.querySelector<HTMLButtonElement>('.play-button');
+    const stage = figure.querySelector<HTMLElement>('.video-stage');
+    const status = figure.querySelector<HTMLElement>('.video-feedback');
+    if (!button || !stage || !status) return;
+    button.hidden = false;
+    button.addEventListener('click', () => {
+      const id = figure.dataset.video;
+      if (!id || !/^[A-Za-z0-9_-]{11}$/.test(id)) {
+        status.textContent = ' De video kan niet worden geladen: ongeldige videoreferentie.';
+        return;
+      }
+      const iframe = document.createElement('iframe');
+      iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=0`;
+      iframe.title = figure.dataset.title || 'Copilot Lab-video';
+      iframe.allow = 'encrypted-media; fullscreen; picture-in-picture';
+      iframe.allowFullscreen = true;
+      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+      stage.replaceChildren(iframe);
+      iframe.focus();
+      status.textContent = ' Geen beeld? Gebruik de directe YouTube-link hierboven.';
+    }, { once: true });
+  });
+</script>

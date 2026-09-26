@@ -1,0 +1,15 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { topicLabel } from '../lib/content';
+interface Props { video: CollectionEntry<'videos'> }
+const { data } = Astro.props.video;
+---
+<article class="card" data-editorial-status={data.status}>
+  <div class="card-visual"><img src={`/art/${data.art}.svg`} alt="" width="720" height="420" loading="lazy" /><span class="video-glyph" aria-hidden="true">▶</span></div>
+  <div class="card-body">
+    <div class="meta"><span class="badge badge-video">Video</span><span>{topicLabel(data.topic)}</span>{data.status === 'archived' && <span class="badge badge-archive">Archief · 2024</span>}</div>
+    <h3><a href={data.url}>{data.title}</a></h3>
+    <p>{data.status === 'archived' ? 'Historische demo bij het oorspronkelijke artikel. Functies en schermen kunnen inmiddels verschillen.' : data.description}</p>
+    <a class="card-link" href={data.url} aria-label={`Bekijk de videopagina: ${data.title}`}>Bekijk de videopagina ↗</a>
+  </div>
+</article>

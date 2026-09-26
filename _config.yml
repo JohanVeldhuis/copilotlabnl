@@ -7,6 +7,20 @@ plugins:
 
 exclude:
   - "/vendor/"
+  # Keep the Astro rebuild out of the legacy deployment until cutover is approved.
+  - "/src/"
+  - "/scripts/"
+  - "/tests/"
+  - "/docs/"
+  - "/public/"
+  - "/dist/"
+  - "/node_modules/"
+  - "/REBUILD-PLAN.md"
+  - "/package.json"
+  - "/package-lock.json"
+  - "/astro.config.mjs"
+  - "/playwright.config.ts"
+  - "/tsconfig.json"
 
 # Site settings
 title: Copilot Lab

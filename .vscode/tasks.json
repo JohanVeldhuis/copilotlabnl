@@ -1,0 +1,30 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Build Copilot Lab",
+			"type": "shell",
+			"command": "npm",
+			"args": ["run", "build"],
+			"group": "build",
+			"problemMatcher": []
+		},
+		{
+			"label": "Preview Copilot Lab",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"run",
+				"preview",
+				"--",
+				"--host",
+				"127.0.0.1",
+				"--port",
+				"4321"
+			],
+			"isBackground": true,
+			"dependsOn": "Build Copilot Lab",
+			"problemMatcher": []
+		}
+	]
+}

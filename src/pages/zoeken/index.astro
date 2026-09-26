@@ -1,0 +1,29 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+<Base title="Zoeken" noindex>
+  <div class="wrap">
+    <header class="page-head"><div class="eyebrow">Vind je volgende idee</div><h1>Waar ben je nieuwsgierig naar?</h1><p class="lede">Zoek in verhalen en video's. Ook historische voorbeelden blijven vindbaar.</p></header>
+    <div id="search" class="search-box"></div>
+    <p id="search-status" role="status">De zoekfunctie wordt geladen. Je kunt ook <a href="/verhalen/">alle verhalen bekijken</a> of <a href="/posts/">door het archief bladeren</a>.</p>
+    <noscript><p class="notice">Zoeken heeft JavaScript nodig. De verhalen, video's en het archief kun je zonder JavaScript bekijken.</p></noscript>
+    <nav class="filter-links" aria-label="Bladeren zonder zoeken"><a class="topic" href="/verhalen/">Verhalen</a><a class="topic" href="/videos/">Video's</a><a class="topic" href="/posts/">Archief</a></nav>
+  </div>
+</Base>
+<link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
+<script is:inline src="/pagefind/pagefind-ui.js"></script>
+<script is:inline>
+  const status = document.getElementById('search-status');
+  if (typeof PagefindUI !== 'undefined') {
+    new PagefindUI({ element: '#search', showSubResults: true, showImages: false, translations: {
+      placeholder: 'Zoek bijvoorbeeld naar prompts of Excel',
+      clear_search: 'Wissen', load_more: 'Meer resultaten', search_label: 'Zoeken op Copilot Lab',
+      searching: 'Zoeken…', zero_results: 'Geen resultaten voor [SEARCH_TERM]',
+      one_result: '[COUNT] resultaat voor [SEARCH_TERM]', many_results: '[COUNT] resultaten voor [SEARCH_TERM]',
+    } });
+    status.hidden = true;
+  } else {
+    status.textContent = 'Zoeken is niet beschikbaar. Gebruik de links hieronder om door de inhoud te bladeren.';
+    console.error('De lokale Pagefind-zoekindex kon niet worden geladen. Gebruik de gebouwde site om zoeken te testen.');
+  }
+</script>

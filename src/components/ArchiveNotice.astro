@@ -1,0 +1,9 @@
+---
+interface Props { refreshedUrl?: string; video?: boolean }
+const { refreshedUrl, video = false } = Astro.props;
+---
+<aside class="notice" aria-label="Archiefinformatie">
+  <strong>Uit het archief · 2024</strong>
+  <p>Deze uitleg is gemaakt met een eerdere versie van Copilot. Functies en schermen kunnen inmiddels verschillen. {video ? 'Deze video is niet opnieuw inhoudelijk gecontroleerd.' : 'De oorspronkelijke tekst en voorbeelden zijn behouden.'}</p>
+  {refreshedUrl && <p><a href={refreshedUrl}>Lees de redactioneel vernieuwde uitleg →</a></p>}
+</aside>
