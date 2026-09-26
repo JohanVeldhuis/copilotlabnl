@@ -45,7 +45,7 @@ Automated checks cover preserved content/video order, GUIDs, routes as real file
 
 The local video activation test substitutes a test player after checking the embed URL. This proves lazy loading and the recovery link, not that YouTube permits every original video to play today.
 
-## Pending approval and release work
+## Remaining review work
 
 - Visual approval of homepage, reading, video and archive templates.
 - Johan's review of the rewritten copy and biography; a current approved photo.
@@ -53,6 +53,6 @@ The local video activation test substitutes a test player after checking the emb
 - A new practical walkthrough/video, only when real material is available.
 - Per-article art/social card refinement if desired.
 - Final Lighthouse measurements, manual assistive-technology review and production hosting/privacy checks.
-- Approved deployment workflow switch and real-domain smoke tests.
+- Real-domain smoke tests after the Astro deployment.
 
-The live Jekyll workflow remains unchanged. Its configuration excludes new Astro source/build/documentation files to keep a future legacy build from publishing implementation material before cutover. Nothing has been committed, pushed or deployed by this rebuild.
+The GitHub Pages workflow now builds the Astro site and publishes `dist`. The legacy Jekyll source remains available for rollback; the last known Jekyll deployment source is commit `7a70a2f`.

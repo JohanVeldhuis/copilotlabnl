@@ -1,6 +1,6 @@
-# Working on Copilot Lab
+# Publishing Copilot Lab
 
-The Astro rebuild is a local review candidate. The existing GitHub Pages workflow still publishes Jekyll; do not assume that merging the rebuild deploys Astro. Production cutover requires separate approval.
+GitHub Pages publishes the Astro site from `dist`. A push to `main` runs the production workflow; pull requests run validation without publishing.
 
 ## Local commands
 
@@ -97,8 +97,10 @@ The current checkpoint uses shared topic compositions and one branded social ima
 
 The initials avatar is deliberate until Johan approves a current photograph. The existing biography's job title was not copied as a current claim.
 
-## Before production
+## Production and rollback
 
-Review the preview, refreshed copy, biography and privacy text. Verify current video availability and metadata. Complete the remaining release gates in [REBUILD-PLAN.md](../REBUILD-PLAN.md), including production performance and the real hosting/domain configuration.
+Before merging, review the preview, refreshed copy, biography and privacy text. Verify current video availability and metadata and complete the applicable release gates in [REBUILD-PLAN.md](../REBUILD-PLAN.md).
 
-Only then replace the deployment workflow with the approved Astro cutover. Preserve a known-good Jekyll revision/artifact for rollback; do not delete the old sources before approval.
+The workflow builds from the committed lockfile and uploads `dist` as the Pages artifact. After deployment, smoke-test the homepage, one original `.html` article URL, search, RSS, sitemap and the 404 page on the custom domain.
+
+The last known Jekyll deployment source is commit `7a70a2f`. If production smoke checks fail, revert the Astro deployment change or manually run the Jekyll workflow from that revision. Keep the legacy Jekyll sources until the Astro deployment has been verified in production.
