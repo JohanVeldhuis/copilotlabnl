@@ -1,8 +1,8 @@
 ---
 import Base from '../layouts/Base.astro';
-import StoryCard from '../components/StoryCard.astro';
-import { getStories, channel } from '../lib/content';
-const featured = (await getStories()).filter((story) => story.data.status !== 'archived').slice(0, 2);
+import ArticleCard from '../components/ArticleCard.astro';
+import { getArticles, channel, topics } from '../lib/content';
+const featured = (await getArticles()).slice(0, 2);
 ---
 <Base title="Copilot Lab">
   <div class="hero-backdrop">
@@ -10,23 +10,22 @@ const featured = (await getStories()).filter((story) => story.data.status !== 'a
       <div>
         <div class="eyebrow"><span class="dot" aria-hidden="true"></span>Een persoonlijk perspectief op AI</div>
         <h1 id="hero-title">Meer uit Copilot.<br /><span>Meer ruimte<br />voor jouw ideeën.</span></h1>
-        <p class="hero-copy">Voorbij de belofte, naar de praktijk. Ontdek mijn verhalen, video's en experimenten met Copilot. Helder uitgelegd, zodat je zelf verder kunt.</p>
-        <div class="actions"><a class="button" href="/verhalen/">Ontdek de verhalen <span aria-hidden="true">↗</span></a><a href="/videos/">Bekijk de video's →</a></div>
+        <p class="hero-copy">Voorbij de belofte, naar de praktijk. Ontdek mijn artikelen en experimenten met Copilot. Helder uitgelegd, zodat je zelf verder kunt.</p>
+        <div class="actions"><a class="button" href="/artikelen/">Ontdek de artikelen <span aria-hidden="true">↗</span></a></div>
         <div class="byline"><span class="avatar" aria-hidden="true">JV</span><div><strong>Johan Veldhuis</strong>Nieuwsgierig naar wat AI écht toevoegt.</div></div>
       </div>
       <figure class="hero-art"><img src="/art/hero.svg" alt="Een blauwe boog, lila bol en zwevende kaarten: nieuwsgierigheid krijgt vorm." width="720" height="420" fetchpriority="high" /></figure>
     </section>
   </div>
   <div class="wrap">
-    <nav class="topics" aria-label="Onderwerpen"><span class="eyebrow">Hier duik ik in</span><a class="topic" href="/onderwerpen/copilot/">Copilot in je werkdag</a><a class="topic" href="/onderwerpen/prompting/">Slimmer prompten</a><a class="topic" href="/onderwerpen/excel/">Werken met data</a></nav>
-    <section class="section" aria-labelledby="stories-title" data-featured>
-      <div class="section-title"><div><div class="eyebrow">Frisse blik op de basis</div><h2 id="stories-title">Nieuwe ideeën voor je werkdag.</h2></div><a href="/verhalen/">Alle verhalen ↗</a></div>
+    <nav class="topics" aria-label="Onderwerpen"><span class="eyebrow">Hier duik ik in</span>{topics.map((topic) => <a class="topic" href={`/onderwerpen/${topic.slug}/`}>{topic.label}</a>)}</nav>
+    <section class="section" aria-labelledby="articles-title" data-featured>
+      <div class="section-title"><div><div class="eyebrow">Frisse blik op de basis</div><h2 id="articles-title">Nieuwe ideeën voor je werkdag.</h2></div><a href="/artikelen/">Alle artikelen ↗</a></div>
       <div class="cards">
-        {featured.map((story) => <StoryCard story={story} />)}
-        <aside class="card invitation"><span class="eyebrow">Liever kijken?</span><span class="large-symbol" aria-hidden="true">↗</span><h3>Een kijkje in het lab.</h3><p>Van uitleg naar een demonstratie. Ontdek mijn videocollectie, met de oorspronkelijke verhalen erbij.</p><p>De huidige collectie bevat historische demo's uit 2024. Bij elke video staat die context vermeld.</p><a class="card-link" href="/videos/">Ontdek de videocollectie ↗</a></aside>
+        {featured.map((article) => <ArticleCard article={article} />)}
       </div>
     </section>
-    <section class="about-strip" aria-labelledby="about-title"><div><div class="eyebrow">De maker achter het lab</div><h2 id="about-title">Johan, aangenaam.</h2></div><p>Wat maakt AI écht bruikbaar? Dat zoek ik graag uit. Hier deel ik mijn persoonlijke ervaringen, concrete voorbeelden en de lessen uit mijn experimenten.</p><a href="/over/">Meer over mij ↗</a></section>
-    <div class="section-title"><div><div class="eyebrow">Een frisse start, met behoud van de geschiedenis</div><p>Oude voorbeelden terugvinden? <a href="/posts/" style="color:var(--blue);text-decoration:underline">Het archief blijft open.</a></p></div><a href={channel}>Volg op YouTube ↗</a></div>
+    <section class="about-strip" aria-labelledby="about-title"><div><div class="eyebrow">Achter Copilot Lab</div><h2 id="about-title">Van nieuwsgierigheid naar praktijk.</h2></div><p>Ik ben Johan. Op Copilot Lab onderzoek ik hoe AI je werk slimmer en eenvoudiger kan maken. Wat ik leer, deel ik in praktische artikelen en voorbeelden.</p><a href="/over/">Meer over Johan ↗</a></section>
+    <div class="section-title"><div><div class="eyebrow">Verder kijken</div><p>Bekijk meer praktische voorbeelden en experimenten op YouTube.</p></div><a href={channel}>Volg op YouTube ↗</a></div>
   </div>
 </Base>

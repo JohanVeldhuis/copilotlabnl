@@ -1,8 +1,0 @@
----
-import TopicPage from '../../../components/TopicPage.astro';
-export function getStaticPaths() {
-  return ['informatie', 'word', 'excel', 'copilot'].map((topic) => ({ params: { topic }, props: { topic } }));
-}
-const { topic } = Astro.props;
----
-<TopicPage topic={topic} legacy />

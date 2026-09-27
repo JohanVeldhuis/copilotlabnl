@@ -1,17 +1,16 @@
 ---
 title: "Een betere prompt? Maak hem samen."
 description: "Begin bij je behoefte, laat ontbrekende informatie benoemen en verbeter je opdracht stap voor stap."
-published: "2026-09-26T19:00:00+02:00"
+published: "2026-10-03T16:00:00+02:00"
 topic: "prompting"
 art: "dialogue"
-originalUrl: "/copilot/2024/07/09/laat-copilot-je-helpen-met-je-prompt.html"
 draft: false
-status: "refreshed"
+status: "published"
 ---
 
 Je hoeft niet vooraf de perfecte opdracht te bedenken. Je kunt Copilot vragen om eerst helder te krijgen wat je nodig hebt, voordat je de uiteindelijke taak laat uitvoeren.
 
-Dit is een redactioneel vernieuwde versie van de uitleg uit 2024. De voorbeeldprompt is bedoeld om mee te experimenteren en is niet opnieuw in een Copilot-product getest.
+De voorbeeldprompt is bedoeld om mee te experimenteren. Controleer altijd of de uiteindelijke opdracht en uitkomst passen bij je doel.
 
 ## Begin met het probleem, niet met een truc
 
@@ -65,4 +64,4 @@ Stop met aanscherpen wanneer een extra instructie niet meer helpt. Meer tekst is
 
 [Microsofts documentatie over prompts](https://support.microsoft.com/en-us/microsoft-365-copilot/get-started-writing-prompts-in-microsoft-365-copilot) beschrijft dat vervolgvragen vaak onderdeel zijn van het proces en dat antwoorden gecontroleerd moeten worden. De beschikbare mogelijkheden verschillen per product en account.
 
-Lees ook [Een goede prompt begint met een helder doel](/verhalen/een-goede-prompt/). De [oorspronkelijke uitleg met video uit 2024](/copilot/2024/07/09/laat-copilot-je-helpen-met-je-prompt.html) blijft als historische publicatie beschikbaar.
+Lees ook [Een goede prompt begint met een helder doel](/artikelen/een-goede-prompt/).

@@ -1,0 +1,30 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import ArticleBody from './ArticleBody.astro';
+import { dateLabel, getArticles, topicLabel } from '../lib/content';
+interface Props { article: CollectionEntry<'articles'> }
+const { article } = Astro.props;
+const { data } = article;
+const related = (await getArticles()).filter((item) => item.id !== article.id).slice(0, 2);
+---
+<Base title={data.title} description={data.description} canonical={data.url} article published={data.published}>
+  <div class="wrap" data-pagefind-body>
+    <header class="page-head">
+      <nav class="breadcrumbs" aria-label="Broodkruimelpad" data-pagefind-ignore><a href="/">Home</a><span aria-hidden="true">/</span><a href="/artikelen/">Artikelen</a></nav>
+      <div class="meta"><span class="badge" data-pagefind-meta="type">Artikel</span><a href={`/onderwerpen/${data.topic}/`}>{topicLabel(data.topic)}</a><span>Uit het lab</span></div>
+      <h1 data-pagefind-meta="title">{data.title}</h1>
+      <p class="lede">{data.description}</p>
+      <div class="byline"><span class="avatar" aria-hidden="true">JV</span><div><strong>Johan Veldhuis</strong><time datetime={data.published}>{dateLabel(data.published)}</time></div></div>
+    </header>
+    <div class="reading-layout">
+      <article>
+        <ArticleBody body={data.body} />
+      </article>
+      <aside class="reading-aside" data-pagefind-ignore>
+        <div class="aside-box"><strong>Van lezen naar proberen</strong><p>Gebruik de voorbeelden als startpunt. Controleer altijd de uitkomst en deel alleen gegevens die je mag gebruiken.</p><a href={`/onderwerpen/${data.topic}/`}>Meer over {topicLabel(data.topic)} →</a></div>
+        <div class="aside-box"><strong>Verder lezen</strong><ul>{related.map((item) => <li><a href={item.data.url}>{item.data.title}</a></li>)}</ul><a href="/artikelen/">Bekijk alle artikelen ↗</a></div>
+      </aside>
+    </div>
+  </div>
+</Base>

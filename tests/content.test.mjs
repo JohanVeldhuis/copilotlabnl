@@ -1,82 +1,106 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile, mkdtemp, mkdir, cp, writeFile, rm } from 'node:fs/promises';
+import { cp, mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { tmpdir } from 'node:os';
-import matter from 'gray-matter';
-import { loadSource, root, videoPattern } from '../scripts/prepare-content.mjs';
+import { loadSource, root } from '../scripts/prepare-content.mjs';
+import { isArticleVisible } from '../src/lib/publication.ts';
+import { isTopic, topicLabel, topics } from '../src/lib/topics.ts';
 
-const { stories, videos, manifest } = await loadSource();
+const { articles } = await loadSource();
 
-test('all legacy posts are archived at URLs verified against the deployed sitemap', () => {
-  const legacy = stories.filter((story) => story.status === 'archived');
-  assert.equal(legacy.length, 11);
-  assert.deepEqual(legacy.map((story) => story.url).sort(), manifest.map(([, url]) => url).sort());
-  assert.ok(legacy.every((story) => story.published.startsWith('2024-')));
-  assert.equal(new Set(stories.map((story) => story.url)).size, stories.length);
+test('topic definitions provide navigation, validation and labels from one registry', () => {
+  assert.deepEqual(topics, [{ slug: 'prompting', label: 'Slimmer prompten' }]);
+  assert.equal(isTopic('prompting'), true);
+  assert.equal(isTopic('unknown'), false);
+  assert.equal(topicLabel('prompting'), 'Slimmer prompten');
 });
 
-test('all 13 original video placements survive in their original order', async () => {
-  let placements = 0;
-  for (const story of stories.filter((story) => story.status === 'archived')) {
-    const { content, data } = matter(await readFile(path.join(root, '_posts', story.source), 'utf8'));
-    const originalIds = [...content.matchAll(videoPattern)].map((match) => match[1]);
-    const migratedIds = [...story.body.matchAll(/<!-- video:([A-Za-z0-9_-]{11}) -->/g)].map((match) => match[1]);
-    assert.deepEqual(migratedIds, originalIds);
-    assert.equal(story.published, new Date(data.date).toISOString());
-    assert.equal(story.originalTitle, String(data.title));
-    assert.equal(story.body.replace(/<!-- video:[A-Za-z0-9_-]{11} -->/g, '').replace(/\s+/g, ' ').trim(),
-      content.replace(videoPattern, '').replace(/\s+/g, ' ').trim());
-    assert.ok(originalIds.every((id) => videos.some((video) => video.youtubeId === id)));
-    placements += migratedIds.length;
-  }
-  assert.equal(placements, 13);
-  assert.equal(videos.length, 13);
+test('article visibility requires a released draft and a reached publication date', () => {
+  const now = new Date('2026-09-27T10:00:00Z');
+  assert.equal(isArticleVisible({ draft: false, published: '2026-09-27T09:59:59Z' }, now), true);
+  assert.equal(isArticleVisible({ draft: false, published: '2026-09-27T10:00:01Z' }, now), false);
+  assert.equal(isArticleVisible({ draft: true, published: '2026-09-27T09:59:59Z' }, now), false);
 });
 
-test('refreshed editions remain separate and distinguish editorial work from testing', () => {
-  const refreshed = stories.filter((story) => story.status === 'refreshed' && !story.draft);
-  assert.equal(refreshed.length, 2);
-  for (const story of refreshed) {
-    assert.ok(stories.some((original) => original.url === story.originalUrl && original.status === 'archived'));
-    assert.match(story.body, /niet opnieuw.*getest/);
-    assert.equal(story.videoIds.length, 0);
-  }
+test('the public collection contains only the two current prompting articles', () => {
+  assert.equal(articles.length, 2);
+  assert.deepEqual(articles.map((article) => article.id).sort(), [
+    'een-goede-prompt',
+    'samen-je-prompt-verbeteren',
+  ]);
+  assert.ok(articles.every((article) => article.status === 'published'));
+  assert.ok(articles.every((article) => article.topic === 'prompting'));
+  assert.ok(articles.every((article) => article.url === `/artikelen/${article.id}/`));
+  assert.ok(articles.every((article) => article.guid === `https://copilotlab.nl${article.url}`));
 });
 
-test('legacy GUIDs, .html suffixes and the date mismatch are preserved', () => {
-  for (const story of stories.filter((story) => story.status === 'archived')) {
-    assert.equal(story.guid, `http://copilotlab.nl${story.url}`);
-    assert.ok(story.url.endsWith('.html'));
-  }
-  assert.ok(stories.find((story) => story.id === 'gebruik-copilot-om-data-te-analyseren').url.includes('/2024/08/14/'));
+test('articles contain no archive or video references', () => {
+  const combined = articles.map((article) => article.body).join('\n');
+  assert.match(combined, /\/artikelen\/een-goede-prompt\//);
+  assert.doesNotMatch(combined, /2024|\/posts\/|\/videos\/|<!--\s*video:/i);
 });
 
-test('new stories and standalone videos support drafts without requiring an archived predecessor', async () => {
+test('draft articles are excluded from the public collection', async () => {
   const fixture = await mkdtemp(path.join(tmpdir(), 'copilotlab-content-'));
   try {
-    await cp(path.join(root, '_posts'), path.join(fixture, '_posts'), { recursive: true });
-    await cp(path.join(root, 'docs/baseline'), path.join(fixture, 'docs/baseline'), { recursive: true });
-    await cp(path.join(root, 'src/content/stories'), path.join(fixture, 'src/content/stories'), { recursive: true });
-    await mkdir(path.join(fixture, 'src/content/videos'), { recursive: true });
-    const videoFile = path.join(fixture, 'src/content/videos/new-video.md');
-    const storyFile = path.join(fixture, 'src/content/stories/new-story.md');
-    const video = (draft) => `---\nyoutubeId: AbCdEfGhI12\ntitle: Test video\ndescription: Fixture only\ntopic: copilot\nart: data\ndraft: ${draft}\n---\nReviewed notes.\n`;
-    const story = (draft) => `---\ntitle: Test story\ndescription: Fixture only\npublished: "2026-09-26T19:00:00Z"\ntopic: copilot\nart: workflow\ndraft: ${draft}\n---\n<!-- video:AbCdEfGhI12 -->\n`;
-    await writeFile(videoFile, video(true));
-    await writeFile(storyFile, story(true));
+    await mkdir(path.join(fixture, 'src/content'), { recursive: true });
+    await cp(path.join(root, 'src/content/articles'), path.join(fixture, 'src/content/articles'), { recursive: true });
+    const file = path.join(fixture, 'src/content/articles/new-article.md');
+    const article = (draft) => `---
+title: "Test article"
+description: "Fixture only"
+published: "2026-09-26T19:00:00Z"
+topic: "prompting"
+art: "workflow"
+status: "published"
+draft: ${draft}
+---
+
+Test body.
+`;
+    await writeFile(file, article(true));
     const drafts = await loadSource(fixture);
-    assert.equal(drafts.stories.find((item) => item.id === 'new-story').draft, true);
-    assert.equal(drafts.videos.find((item) => item.id === 'AbCdEfGhI12').draft, true);
-    await writeFile(storyFile, story(false));
-    await assert.rejects(loadSource(fixture), /Missing or unpublished video/);
-    await writeFile(videoFile, video(false));
+    assert.equal(drafts.articles.find((item) => item.id === 'new-article').draft, true);
+    await writeFile(file, article(false));
     const published = await loadSource(fixture);
-    const newStory = published.stories.find((item) => item.id === 'new-story');
-    assert.equal(newStory.status, 'published');
-    assert.equal(newStory.originalUrl, undefined);
-    assert.deepEqual(newStory.videoIds, ['AbCdEfGhI12']);
-    assert.equal(published.videos.find((item) => item.id === 'AbCdEfGhI12').url, '/videos/AbCdEfGhI12/');
+    assert.equal(published.articles.find((item) => item.id === 'new-article').url, '/artikelen/new-article/');
+  } finally {
+    await rm(fixture, { recursive: true });
+  }
+});
+
+test('unsupported legacy metadata and video markers are rejected', async () => {
+  const fixture = await mkdtemp(path.join(tmpdir(), 'copilotlab-content-'));
+  try {
+    await mkdir(path.join(fixture, 'src/content/articles'), { recursive: true });
+    const file = path.join(fixture, 'src/content/articles/legacy.md');
+    await writeFile(file, `---
+title: "Legacy"
+description: "Fixture only"
+published: "2024-01-01T00:00:00Z"
+topic: "prompting"
+art: "prompt"
+status: "archived"
+draft: false
+---
+
+<!-- video:TmdXWvRIGu0 -->
+`);
+    await assert.rejects(loadSource(fixture), /Unsupported article status/);
+    await writeFile(file, `---
+title: "Video marker"
+description: "Fixture only"
+published: "2026-01-01T00:00:00Z"
+topic: "prompting"
+art: "prompt"
+status: "published"
+draft: false
+---
+
+<!-- video:TmdXWvRIGu0 -->
+`);
+    await assert.rejects(loadSource(fixture), /Unsupported template or video marker/);
   } finally {
     await rm(fixture, { recursive: true });
   }

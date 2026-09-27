@@ -1,27 +1,32 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
-import { readFile, readdir, stat } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import { gzipSync } from 'node:zlib';
 
-const originalPath = '/informatie/2024/06/16/wat-is-een-goed-prompt-copy.html';
-const pages = ['/', '/verhalen/een-goede-prompt/', originalPath, '/videos/TmdXWvRIGu0/', '/verhalen/', '/zoeken/'];
+const articles: { url: string; published: string; draft: boolean }[] = JSON.parse(await readFile('.generated/articles.json', 'utf8'));
+const visibleArticles = articles.filter((article) => !article.draft && Date.parse(article.published) <= Date.now());
+const futureArticles = articles.filter((article) => !article.draft && Date.parse(article.published) > Date.now());
+const pages = ['/', '/artikelen/', '/onderwerpen/prompting/', '/zoeken/', ...visibleArticles.map((article) => article.url)];
 
-test('all original URLs are actual files and served without folder redirects', async ({ request }) => {
-  const stories: { status: string; url: string }[] = JSON.parse(await readFile('.generated/stories.json', 'utf8'));
-  for (const story of stories.filter((story) => story.status === 'archived')) {
-    expect((await stat(path.join('dist', story.url))).isFile()).toBeTruthy();
-    const response = await request.get(story.url, { maxRedirects: 0 });
-    expect(response.status(), story.url).toBe(200);
-    expect(await response.text()).toContain('Uit het archief');
+test('homepage features only currently published articles', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('[data-featured] article')).toHaveCount(visibleArticles.length);
+  await expect(page.getByRole('link', { name: 'Archief' })).toHaveCount(0);
+  await expect(page.getByRole('link', { name: "Video's" })).toHaveCount(0);
+  await expect(page.getByText('2024')).toHaveCount(0);
+});
+
+test('future articles do not have public routes', async ({ request }) => {
+  for (const article of futureArticles) {
+    expect((await request.get(article.url)).status(), article.url).toBe(404);
   }
 });
 
-test('homepage features only refreshed stories and links to the archive', async ({ page }) => {
-  await page.goto('/');
-  await expect(page.locator('[data-featured] [data-editorial-status="archived"]')).toHaveCount(0);
-  await expect(page.locator('[data-featured] [data-editorial-status="refreshed"]')).toHaveCount(2);
-  await expect(page.getByRole('link', { name: 'Het archief blijft open.' })).toHaveAttribute('href', '/posts/');
+test('removed archive and video routes return not found', async ({ request }) => {
+  for (const url of ['/verhalen/', '/verhalen/een-goede-prompt/', '/posts/', '/videos/', '/informatie/2024/06/16/wat-is-een-goed-prompt-copy.html']) {
+    expect((await request.get(url)).status(), url).toBe(404);
+  }
 });
 
 test('homepage transfer and first-party script budgets remain bounded', async ({ page }) => {
@@ -37,42 +42,24 @@ test('homepage transfer and first-party script budgets remain bounded', async ({
   expect(compressed.reduce((total, bytes) => total + bytes, 0)).toBeLessThanOrEqual(50 * 1024);
 });
 
-test('original prompts and all four video facades render with historical context', async ({ page }) => {
-  await page.goto(originalPath);
-  await expect(page.locator('[data-video]')).toHaveCount(4);
-  await expect(page.locator('iframe')).toHaveCount(0);
-  await expect(page.getByText('Uit het archief · 2024', { exact: true })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Lees de redactioneel vernieuwde uitleg →' })).toHaveAttribute('href', '/verhalen/een-goede-prompt/');
-  await expect(page.locator('#de-componenten')).toBeVisible();
+test('published article pages contain current content', async ({ page }) => {
+  await page.goto('/artikelen/een-goede-prompt/');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Een goede prompt begint met een helder doel');
+  await expect(page.getByText('Archief · 2024')).toHaveCount(0);
 });
 
-test('video does not contact third parties before activation and keeps a recovery link', async ({ page }) => {
-  const external: string[] = [];
-  page.on('request', (request) => {
-    if (!request.url().startsWith('http://127.0.0.1:4329')) external.push(request.url());
-  });
-  await page.goto('/videos/TmdXWvRIGu0/');
-  await page.waitForLoadState('networkidle');
-  expect(external).toEqual([]);
-  await expect(page.locator('iframe')).toHaveCount(0);
-  await page.route('https://www.youtube-nocookie.com/**', (route) => route.fulfill({ status: 200, contentType: 'text/html', body: '<!doctype html><title>Test player</title>' }));
-  await page.getByRole('button', { name: /Speel video/ }).click();
-  await expect(page.locator('iframe')).toHaveAttribute('src', 'https://www.youtube-nocookie.com/embed/TmdXWvRIGu0?autoplay=0');
-  await expect(page.getByRole('link', { name: 'Open deze video op YouTube ↗' })).toHaveAttribute('href', 'https://www.youtube.com/watch?v=TmdXWvRIGu0');
-});
-
-test('search finds current and archived content and has an empty state', async ({ page }) => {
+test('search finds current content and has an empty state', async ({ page }) => {
   await page.goto('/zoeken/');
   const input = page.getByRole('textbox');
   await input.fill('prompt');
-  await expect(page.locator('.pagefind-ui__result').first()).toBeVisible();
-  await expect(page.locator('.pagefind-ui__result-link').first()).toHaveAttribute('href', /^\//);
+  await expect(page.locator('.pagefind-ui__result')).toHaveCount(visibleArticles.length);
+  await expect(page.locator('.pagefind-ui__result-link').first()).toHaveAttribute('href', /^\/artikelen\//);
   await input.fill('zzznietbestaandonderwerpzzz');
   await expect(page.getByText(/Geen resultaten voor/)).toBeVisible();
 });
 
 test('clipboard failure is explicit and prompt text stays selectable', async ({ page }) => {
-  await page.goto('/verhalen/een-goede-prompt/');
+  await page.goto('/artikelen/een-goede-prompt/');
   await page.evaluate(() => {
     Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: () => Promise.reject(new Error('Test denial')) } });
   });
@@ -81,13 +68,12 @@ test('clipboard failure is explicit and prompt text stays selectable', async ({ 
   await expect(page.locator('pre code').first()).toContainText('Help me een werkoverleg');
 });
 
-test('reading and direct video links work without JavaScript', async ({ browser }) => {
+test('articles work without JavaScript', async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
-  await page.goto(`http://127.0.0.1:4329${originalPath}`);
+  await page.goto('http://127.0.0.1:4329/artikelen/een-goede-prompt/');
   await expect(page.locator('h1')).toContainText('prompt');
-  await expect(page.getByRole('button', { name: /Speel video/ })).toHaveCount(0);
-  await expect(page.getByRole('link', { name: 'Open deze video op YouTube ↗' })).toHaveCount(4);
+  await expect(page.locator('article')).toContainText('Vier onderdelen die richting geven');
   await context.close();
 });
 

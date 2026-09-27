@@ -1,8 +1,8 @@
 ---
 import TopicPage from '../../../components/TopicPage.astro';
-import { topicLabels } from '../../../lib/content';
+import { topics } from '../../../lib/content';
 export function getStaticPaths() {
-  return Object.keys(topicLabels).map((topic) => ({ params: { topic }, props: { topic } }));
+  return topics.map((topic) => ({ params: { topic: topic.slug }, props: { topic: topic.slug } }));
 }
 const { topic } = Astro.props;
 ---

@@ -4,14 +4,13 @@ description: "Geef Copilot richting met een doel, context, verwachtingen en bron
 published: "2026-09-26T19:00:00+02:00"
 topic: "prompting"
 art: "prompt"
-originalUrl: "/informatie/2024/06/16/wat-is-een-goed-prompt-copy.html"
 draft: false
-status: "refreshed"
+status: "published"
 ---
 
 Een prompt hoeft niet indrukwekkend te klinken. Hij moet vooral duidelijk maken wat je nodig hebt. Begin met het resultaat dat je wilt bereiken en voeg informatie toe die helpt om dat resultaat te beoordelen.
 
-Deze redactioneel vernieuwde uitleg vervangt de tijdgebonden EK-voorbeelden uit het oorspronkelijke artikel door een werkvoorbeeld. De voorbeeldprompts hieronder zijn niet opnieuw in een Copilot-product getest. Gebruik ze als startpunt, niet als garantie voor een bepaalde uitkomst.
+De voorbeeldprompts hieronder zijn bedoeld als startpunt. Controleer altijd of de uitkomst past bij je doel en situatie.
 
 ## Vier onderdelen die richting geven
 
@@ -65,9 +64,3 @@ Een nette tabel is geen bewijs dat de inhoud klopt. Controleer feitelijke uitspr
 Toegang tot documenten, e-mail of vergaderingen hangt af van je Copilot-product, account, licentie, machtigingen en organisatie-instellingen. Een prompt geeft geen toegang tot informatie die het product niet kan gebruiken.
 
 Daarom begint dit voorbeeld met materiaal dat je zelf toevoegt. Ook dan moet je de geldende afspraken over gegevensbescherming volgen.
-
-## Verder lezen
-
-Wil je de opdracht samen aanscherpen? Lees [Samen met Copilot je prompt verbeteren](/verhalen/samen-je-prompt-verbeteren/).
-
-De [oorspronkelijke publicatie uit 2024](/informatie/2024/06/16/wat-is-een-goed-prompt-copy.html) blijft beschikbaar, inclusief de vier historische video's. Die demonstreren de oude voorbeelden, niet het nieuwe werkvoorbeeld hierboven.

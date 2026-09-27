@@ -1,0 +1,15 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import ArticleCard from './ArticleCard.astro';
+import { topics } from '../lib/content';
+interface Props { articles: CollectionEntry<'articles'>[] }
+const { articles } = Astro.props;
+---
+<Base title="Artikelen" canonical="/artikelen/">
+  <div class="wrap">
+    <header class="page-head"><div class="eyebrow">Een persoonlijk perspectief</div><h1>Ideeën om mee verder te gaan.</h1><p class="lede">Heldere uitleg, praktische voorbeelden en lessen uit het lab.</p></header>
+    <nav class="filter-links" aria-label="Artikelen ontdekken"><a class="topic" href="/artikelen/">Alle artikelen</a>{topics.map((topic) => <a class="topic" href={`/onderwerpen/${topic.slug}/`}>{topic.label}</a>)}<a class="topic" href="/zoeken/">Zoeken ↗</a></nav>
+    <div class="cards">{articles.map((article) => <ArticleCard article={article} />)}</div>
+  </div>
+</Base>
