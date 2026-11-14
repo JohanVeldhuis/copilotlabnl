@@ -17,7 +17,7 @@
     "validate": "npm run check && npm run test && npm run build && npm run test:browser"
   },
   "dependencies": {
-    "astro": "7.3.5",
+    "astro": "7.4.7",
     "gray-matter": "4.0.3",
     "marked": "18.0.14",
     "sharp": "0.35.5"
